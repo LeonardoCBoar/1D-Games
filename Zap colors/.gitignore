@@ -1,4 +1,4 @@
 .vscode/
-Objects/
+Objects/*
 *.exe
 base.cpp
