@@ -7,11 +7,11 @@
 //############################################Graphical##########################
 
 void initialize_sprites(sf::RectangleShape *shapes){
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 6; i++)
     {
         shapes[i] = sf::RectangleShape(sf::Vector2f(256,256));
         shapes[i].setPosition(sf::Vector2f(i*256,0));
-        shapes[i].setFillColor(sf::Color::Black);
+        shapes[i].setFillColor(sf::Color::White);
         shapes[i].setOutlineColor(sf::Color::Black);
         shapes[i].setOutlineThickness(1);
     }
@@ -31,13 +31,16 @@ void change_all_square_colors(sf::RectangleShape *shapes, sf::Color col){
 
 
 
-enum times{
-    ROUND = 5,
-    END = 3
-};
+
+
+
 
 
 //############################################Time##########################
+enum times{
+    ROUND = 5,
+    END = 2
+};
 
 float time_left;
 int selected_timer;
@@ -125,21 +128,30 @@ void shuffle_color_list(){
 };
 
 
-//############################################Rounds##########################
+
+
 int target_square{};
 bool check_victory(int sel_square){
-    printf("Player clicked at %i, the correct was %i\n",sel_square,target_square+1);
 
     if(sel_square == target_square+1) return true;
     else return false;
 }
 
- sf::Clock round_timer;
+int lvl = 0;
+void update_points(sf::RectangleShape *shapes){
+    sf::Color col = sf::Color(255,180,0,lvl*8);
+    shapes[5].setFillColor(col);
+}
+
+//############################################Rounds##########################
+
+sf::Clock round_timer;
 void start_round(sf::RectangleShape *shapes){
     
+
     round_timer.restart();
 
-    start_time(ROUND);
+    start_time(ROUND-(lvl*0.15));
 
     shuffle_color_list();
     target_square = rand()%3;
@@ -149,6 +161,8 @@ void start_round(sf::RectangleShape *shapes){
     {
         shapes[i].setFillColor(col_list[i-1]);
     }
+
+    printf("Starting round %i\n",lvl);
 }
 
 void end_round(sf::RectangleShape *shapes,bool victory){
@@ -158,10 +172,14 @@ void end_round(sf::RectangleShape *shapes,bool victory){
     float time = round_timer.restart().asSeconds();
 
     if(victory){
+        if(lvl<30) lvl++;
         printf("Player won this round in %f seconds\n",time);
         change_all_square_colors(shapes,sf::Color::Green);
+        update_points(shapes);
     } 
     else {
+        lvl = 0;
+        update_points(shapes);
         printf("Player lost this round in %f seconds\n",time);
         change_all_square_colors(shapes,sf::Color::Red );
     }

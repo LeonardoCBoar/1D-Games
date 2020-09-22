@@ -19,11 +19,11 @@ int main(){
 
 
     //#########################################Graphical Variables#################################################
-    sf::RenderWindow window(sf::VideoMode(1280,256),"Unidimensional reflex");
+    sf::RenderWindow window(sf::VideoMode(1536,256),"Unidimensional reflex");
     window.setFramerateLimit(60);
 
 
-    sf::RectangleShape Render_list[5];
+    sf::RectangleShape Render_list[6];
     initialize_sprites(Render_list);
 
 
@@ -34,17 +34,19 @@ int main(){
 
 
 
+
     sf::Clock timer;
     sf::Time delta_time;
-    int counter = 0;
+
 
     int game_state = STARTING;
 
     int selected_square = 6;
 
 
-    while(window.isOpen()){
 
+    while(window.isOpen()){
+        
         delta_time = timer.restart();
 
 
@@ -62,7 +64,6 @@ int main(){
             
             if(input.type==sf::Event::MouseButtonPressed ){
                 selected_square = (sf::Mouse::getPosition(window).x)/256;
-                printf("Clicked at %i square \n",selected_square);
             }
             
 
