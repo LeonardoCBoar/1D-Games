@@ -1,0 +1,4 @@
+.vscode/
+Objects/
+*.exe
+base.cpp
