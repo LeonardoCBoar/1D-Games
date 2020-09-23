@@ -1,4 +1,5 @@
 #include "GameFuncs.h"
+#include <SFML\Audio.hpp>
 #include <time.h>
 #include <stdlib.h>
 #include <map>
@@ -22,7 +23,7 @@ void initialize_sprites(sf::RectangleShape *shapes,float factor){
 
 
 void change_all_square_colors(sf::RectangleShape *shapes, sf::Color col){
-    for (size_t i = 0; i < 4; i++)
+    for (size_t i = 0; i < 6; i++)
     {
         shapes[i].setFillColor(col);
     }
@@ -56,13 +57,24 @@ bool update_timer(sf::RectangleShape *shapes, float time){
         time_left=0;
         return true;
     }
+    
+    if(selected_timer==END){
+        int stage = (6/selected_timer)*time_left;
 
-    sf::Uint8 bright = (255.0/(float)selected_timer)*time_left;
+        shapes[stage].setFillColor(sf::Color::Black);
+        //printf("%i \n",stage);
+    }
+    else{
 
-    sf::Color timer_color{0,0,0,bright};
-    //printf("%i\n",bright);
+        sf::Uint8 bright = (255.0/(float)selected_timer)*time_left;
+        //printf("%i\n",bright);    
+        sf::Color timer_color{0,0,0,bright};
 
-    shapes[4].setFillColor(timer_color);
+        shapes[4].setFillColor(timer_color);
+    }
+
+
+
 
     return false;
 
@@ -153,6 +165,7 @@ void start_round(sf::RectangleShape *shapes){
     round_timer.restart();
 
     start_time(ROUND-(lvl*0.15));
+    update_points(shapes);
 
     shuffle_color_list();
     target_square = rand()%3;
@@ -171,19 +184,26 @@ void end_round(sf::RectangleShape *shapes,bool victory){
     start_time(END);
 
     float time = round_timer.restart().asSeconds();
+    
 
     if(victory){
         if(lvl<30) lvl++;
         printf("Player won this round in %f seconds\n",time);
+
+
         change_all_square_colors(shapes,sf::Color::Green);
         update_points(shapes);
     } 
     else {
         lvl = 0;
         update_points(shapes);
+
+
+
         printf("Player lost this round in %f seconds\n",time);
         change_all_square_colors(shapes,sf::Color::Red );
     }
+
 
 
 };

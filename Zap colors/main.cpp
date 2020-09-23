@@ -1,7 +1,9 @@
 #include <SFML\Graphics.hpp>
+#include<SFML\Window.hpp>
+#include<SFML\Audio.hpp>
+
 #include "AssetManager.h"
 #include "GameFuncs.h"
-#include<SFML\Window.hpp>
 
 
 
@@ -18,7 +20,20 @@ enum Round{
 
 int main(){
 
+
+
+
+    //#########################################Audio Variables#################################################
     
+    sf::Music music;
+    if (!music.openFromFile("Assets/bg.ogg")){
+        return -1; // error
+    }
+    music.play();
+    music.setLoop(true);
+    music.setVolume(50);
+
+
     //#########################################Graphical Variables#################################################
     float scr_factor = sf::VideoMode::getDesktopMode().width/1920.0;
     
