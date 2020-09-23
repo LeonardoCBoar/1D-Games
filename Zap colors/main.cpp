@@ -1,6 +1,7 @@
 #include <SFML\Graphics.hpp>
 #include "AssetManager.h"
 #include "GameFuncs.h"
+#include<SFML\Window.hpp>
 
 
 
@@ -17,14 +18,16 @@ enum Round{
 
 int main(){
 
-
+    
     //#########################################Graphical Variables#################################################
-    sf::RenderWindow window(sf::VideoMode(1536,256),"Unidimensional reflex");
+    float scr_factor = sf::VideoMode::getDesktopMode().width/1920.0;
+    
+    sf::RenderWindow window(sf::VideoMode(1920*scr_factor,320*scr_factor),"Zap Color",sf::Style::Titlebar | sf::Style::Close);
     window.setFramerateLimit(60);
 
 
     sf::RectangleShape Render_list[6];
-    initialize_sprites(Render_list);
+    initialize_sprites(Render_list,scr_factor);
 
 
     //#########################################Game Variables########################################################
@@ -60,10 +63,13 @@ int main(){
                 continue;
             }
 
+            //Resize Window
+
             //Mouse clicks
             
             if(input.type==sf::Event::MouseButtonPressed ){
-                selected_square = (sf::Mouse::getPosition(window).x)/256;
+                selected_square = (sf::Mouse::getPosition(window).x)/(320*scr_factor);
+                printf("Clicked at %i\n",selected_square);
             }
             
 
@@ -103,14 +109,15 @@ int main(){
         
         case ENDING:
             end_round(Render_list,check_victory(selected_square));
-
+            selected_square = 6;
             game_state = ENDED;
             break;
 
         case ENDED:
-            if(update_timer(Render_list,d_time)){
+            if(update_timer(Render_list,d_time)||selected_square!=6){
                 game_state =STARTING;
             }
+
             break;
         
         default:

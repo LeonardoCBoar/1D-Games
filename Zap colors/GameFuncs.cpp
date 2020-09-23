@@ -6,11 +6,12 @@
 
 //############################################Graphical##########################
 
-void initialize_sprites(sf::RectangleShape *shapes){
+void initialize_sprites(sf::RectangleShape *shapes,float factor){
+    int sqr_s = 320*factor;
     for (int i = 0; i < 6; i++)
     {
-        shapes[i] = sf::RectangleShape(sf::Vector2f(256,256));
-        shapes[i].setPosition(sf::Vector2f(i*256,0));
+        shapes[i] = sf::RectangleShape(sf::Vector2f(sqr_s,sqr_s));
+        shapes[i].setPosition(sf::Vector2f(i*sqr_s,0));
         shapes[i].setFillColor(sf::Color::White);
         shapes[i].setOutlineColor(sf::Color::Black);
         shapes[i].setOutlineThickness(1);

@@ -5,7 +5,7 @@
 #include <SFML/Graphics.hpp>
 
 
-void initialize_sprites(sf::RectangleShape *shapes);
+void initialize_sprites(sf::RectangleShape *shapes,float factor);
 
 
 
